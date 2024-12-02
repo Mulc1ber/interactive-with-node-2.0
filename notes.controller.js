@@ -44,10 +44,14 @@ async function removeNote(id) {
 async function editNote(id, title) {
   const notes = await getNotes();
 
-  const note = notes.find((note) => note.id === id);
-  note.title = title;
+  const editedNotes = notes.map((note) => {
+    if (note.id === id) {
+      note.title = title;
+    }
+    return note;
+  });
 
-  await fs.writeFile(notesPath, JSON.stringify(notes));
+  await fs.writeFile(notesPath, JSON.stringify(editedNotes));
   console.log(
     chalk.green.inverse(`Note with id="${id}" has been edit on "${title}"`)
   );
